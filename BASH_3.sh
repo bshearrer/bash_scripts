@@ -5,7 +5,8 @@ function RandInsert
 {
 	dog=$(($RANDOM%10))
 	echo "${1// /_} is at position $dog in the array"
-	
+	echo
+
 	counter=0
 	for i in ${staticArray[*]};
 		do
@@ -19,24 +20,25 @@ function RandInsert
 	echo "The array is now: ${mArray[*]}"
 }
 
-declare -a myArray=(dog cat -1 2.13 100 seven7 The_Incredible_Hulk APPLE zoom 566)
+declare -a myArray=()
 declare -a staticArray=()
 declare -a mArray=()
 declare -a sortedArray=()
 
-#counter=1
-#
-#while [ $counter -le 10 ];
-#do
-#	read -p "Enter an item: " item
-#	myArray+=(${item// /_})	
-#	counter=$(($counter+1))
-#done
+counter=1
+
+while [ $counter -le 10 ];
+do
+	read -p "Enter an item [$(($counter-1))]: " item
+	myArray+=(${item// /_})	
+	counter=$(($counter+1))
+done
 
 staticArray=("${myArray[@]}")
 
 #Check the length of the array to ensure there are 10 entries
-arrayLength = ${#staticArray[*]}
+echo
+arrayLength=${#staticArray[*]}
 echo "This array has 10 items. $arrayLength"
 echo
 
@@ -82,6 +84,7 @@ if [[ "$flag" == "1" ]]; then
 else
 	echo "There is not a cat in my array"
 fi
+echo
 
 #Insert a marvel name randomly into the array
 read -p "Please insert the name of a Marvel character: " marvelName
@@ -89,8 +92,19 @@ RandInsert "$marvelName"
 echo
 
 #Print the integers sorted in the original array
-sortedArray=("${myArray[@]}")
 
+re='^-?[0-9]+$'
+for i in ${staticArray[*]};
+	do
+		if [[ $i =~ $re ]]; then
+			sortedArray+=($i)
+		fi
+	done
+
+echo "The integers in the sorted array are:"
 sortedArray=($(for i in ${sortedArray[*]}; do echo $i; done | sort))
+echo ${sortedArray[*]}
+echo
 
-echo "The integers in the original array, sorted, are: "
+read -p "Press enter to close the script:"
+echo
